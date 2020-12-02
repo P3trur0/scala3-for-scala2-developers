@@ -1,3 +1,5 @@
+import intersection_types.HasLogging
+
 /**
  * Scala 3 introduces several new types that increase the power of the Scala type system.
  */
@@ -32,7 +34,7 @@ object intersection_types:
    * Form the intersection of the types `HasLogging` and `HasUserRepo` by using the type 
    * intersection operator `&`.
    */
-  type HasLoggingAndUserRepo
+  type HasLoggingAndUserRepo = HasLogging & HasUserRepo
 
   /**
    * EXERCISE 2
@@ -40,7 +42,7 @@ object intersection_types:
    * Using the `IsEqual` helper method, test to see if the type `HasLogging & HasUserRepo` is the 
    * same as the type `HasUserRepo & HasLogging`.
    */
-  // IsEqual ...
+  IsEqual[HasLogging & HasUserRepo, HasUserRepo & HasLogging]
 
   def IsEqual[A, B](using ev: A =:= B) = ()
 
@@ -51,7 +53,9 @@ object intersection_types:
    * 
    * Create class that has the type `HasUserRepo & HasLogging`.
    */
-  class BothUserRepoAndLogging
+  class BothUserRepoAndLogging extends HasUserRepo with HasLogging:
+    def logging = ???
+    def userRepo = ???
 
 /**
  * UNION TYPES
@@ -80,7 +84,7 @@ object union_types:
    * Create a value of type `PaymentDeniedOrMissingAddress` by assigning the following variable to 
    * a `PaymentDenied` error.
    */
-  val example1: PaymentDeniedOrMissingAddress = ???
+  val example1: PaymentDeniedOrMissingAddress = PaymentDenied("your payment has been denied")
 
   /**
    * EXERCISE 3
@@ -88,7 +92,7 @@ object union_types:
    * Create a value of type `PaymentDeniedOrMissingAddress` by assigning the following variable to 
    * a `MissingAddress` error.
    */
-  val example2: PaymentDeniedOrMissingAddress = ???
+  val example2: PaymentDeniedOrMissingAddress = MissingAddress("address was missing")
 
   /**
    * EXERCISE 4
@@ -96,7 +100,9 @@ object union_types:
    * Perform a pattern match on `example2`, covering each possibility and printing out the 
    * error messages to the console.
    */
-  // example2 match 
+  example2 match
+    case PaymentDenied(a) => println(a)
+    case MissingAddress(a) => println(a)
 
 /**
  * MATCH TYPES
