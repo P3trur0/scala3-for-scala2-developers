@@ -90,11 +90,11 @@ object type_classes:
    * type class for a generic `Vector[A]`, given an instance of `PrettyPrint` for the type `A`.
    */
   // given vectorPrettyPrint[A] as ...
-  
+
   given vectorPrettyPrint[A](using PrettyPrint[A]) as PrettyPrint[List[A]]:
     extension (a: List[A]) def prettyPrint: String = a.map(_.prettyPrint).mkString("\n")
 
-  import scala.Eql._ 
+  import scala.CanEqual._
 
   /**
    * EXERCISE 8
@@ -102,7 +102,7 @@ object type_classes:
    * Using the `derives` clause, derive an instance of the type class `Eql` for 
    * `Color`.
    */
-  enum Color derives Eql:
+  enum Color derives CanEqual:
     case Red 
     case Green 
     case Blue
